@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>云南少数民族纹样文创平台 | 纹样·传承·创新</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background-color: #FEF9F0; color: #2C2418; line-height: 1.5; }
+    .container { max-width: 1280px; margin: 0 auto; padding: 0 24px; }
+    .navbar { position: sticky; top: 0; z-index: 1000; background: rgba(255, 251, 245, 0.96); backdrop-filter: blur(12px); border-bottom: 1px solid #F0E2D2; padding: 12px 0; }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .logo { font-size: 1.5rem; font-weight: 700; background: linear-gradient(135deg, #B45F2B, #DA7E3C); background-clip: text; -webkit-background-clip: text; color: transparent; letter-spacing: -0.3px; cursor: pointer; }
+    .nav-links { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+    .nav-links a { text-decoration: none; color: #4A3727; font-weight: 500; transition: 0.2s; font-size: 0.95rem; cursor: pointer; }
+    .nav-links a:hover { color: #C26E2C; }
+    .search-area { display: flex; gap: 12px; align-items: center; }
+    .search-box { background: white; border: 1px solid #EBDCCB; border-radius: 40px; padding: 6px 16px; display: flex; align-items: center; gap: 8px; }
+    .search-box input { border: none; background: transparent; outline: none; width: 190px; font-size: 0.85rem; }
+    .btn-primary { background: #C26E2C; border: none; padding: 8px 24px; border-radius: 40px; color: white; font-weight: 600; cursor: pointer; transition: 0.2s; }
+    .btn-primary:hover { background: #A95E24; }
+    .btn-outline { background: transparent; border: 1px solid #C26E2C; padding: 6px 20px; border-radius: 40px; color: #C26E2C; font-weight: 500; cursor: pointer; }
+    .btn-outline:hover { background: #FFF2E6; }
+    .hero { background: radial-gradient(circle at 10% 30%, #F8EADB, #F2DECB); border-radius: 40px; margin: 28px 0 48px; padding: 56px 48px; position: relative; overflow: hidden; }
+    .hero::after { content: "☁️✨"; font-size: 140px; position: absolute; bottom: -20px; right: 0; opacity: 0.1; pointer-events: none; }
+    .card { background: white; border-radius: 24px; overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.02); cursor: pointer; }
+    .card:hover { transform: translateY(-6px); box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.1); }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 28px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+    .section-title { margin: 44px 0 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border-bottom: 1px solid #F0E2D2; padding-bottom: 10px; }
+    .section-title h2, .section-title h3 { font-size: 1.45rem; }
+    .tag { background: #F0E2D2; padding: 4px 10px; border-radius: 40px; font-size: 12px; display: inline-block; margin: 4px 4px 0 0; }
+    select { border: 1px solid #EBDCCB; border-radius: 40px; padding: 8px 14px; background: white; color: #4A3727; outline: none; }
+    img { display: block; }
+    .footer { background: #2C2418; color: #CFC5B6; padding: 48px 0 32px; margin-top: 70px; }
+    .footer a { color: #CFC5B6; text-decoration: none; cursor: pointer; }
+    .footer a:hover { color: #E6C8A8; }
+    .toast-msg { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #2C2418; color: white; padding: 10px 24px; border-radius: 60px; z-index: 2000; font-size: 0.85rem; font-weight: 500; }
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.65); justify-content: center; align-items: center; z-index: 1200; }
+    .modal-content { background: #FFFEF9; max-width: 480px; width: 90%; border-radius: 32px; padding: 32px; }
+    .drawer { position: fixed; top: 0; right: -460px; width: 440px; height: 100%; background: white; box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1); z-index: 1300; transition: right 0.3s ease; padding: 24px; overflow-y: auto; }
+    .drawer.open { right: 0; }
+    .overlay-blur { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(3px); z-index: 1250; display: none; }
+    .saved-preview-card, .cart-row { display: flex; gap: 12px; background: #F8F0E7; border-radius: 18px; padding: 10px; margin-bottom: 10px; align-items: center; }
+    .saved-preview-card img, .cart-row img { width: 72px; height: 72px; object-fit: cover; border-radius: 14px; }
+    .empty-box { background: #F8F0E7; border-radius: 24px; padding: 28px; text-align: center; color: #8A7159; }
+    @media (max-width: 768px) { .drawer { width: 90%; right: -90%; } .hero { padding: 32px 24px; } .grid-4, .grid-3 { gap: 16px; } .nav-links { gap: 16px; } .search-box input { width: 120px; } }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="container nav-inner">
+      <div class="logo" id="logoHome">🎨 云纹·云南纹样文创平台</div>
+      <div class="nav-links" id="navLinks">
+        <a data-nav="home">首页</a>
+        <a data-nav="library">纹样库</a>
+        <a data-nav="try">文创应用预览</a>
+        <a data-nav="encyclopedia">民族百科</a>
+        <a data-nav="shop">文创商城</a>
+        <div id="authSection">
+          <a id="loginBtn" class="btn-outline" style="padding:4px 16px; display: inline-block;">登录/注册</a>
+        </div>
+      </div>
+      <div class="search-area">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="globalSearch" placeholder="佤族木鼓纹、傣族水波纹...">
+        </div>
+        <i class="fas fa-bell" id="msgIcon" style="display:none; cursor:pointer;"></i>
+      </div>
+    </div>
+  </div>
+
+  <main id="appContent"></main>
+
+  <div class="footer">
+    <div class="container">
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 24px;">
+        <div>© 2025 云南纹样文创平台 | 云南少数民族文化保护与发展项目</div>
+        <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+          <a id="footerAbout">关于我们</a>
+          <a id="footerLicense">纹样授权协议</a>
+          <a id="footerJoin">加入我们</a>
+          <a id="footerUpload">上传纹样</a>
+        </div>
+      </div>
+      <div style="margin-top: 20px; font-size: 12px; text-align: center;">
+        云南15个世居少数民族纹样文化保护标识 · 非遗合作项目
+      </div>
+    </div>
+  </div>
+
+  <div id="loginModal" class="modal">
+    <div class="modal-content">
+      <h3>登录 · 体验完整创意生态</h3>
+      <p style="margin: 14px 0;">手机号快捷登录（模拟）</p>
+      <input type="text" id="phoneInput" placeholder="手机号" style="width:100%; padding:12px; border-radius:40px; border:1px solid #ddd; margin-bottom:16px;">
+      <button id="confirmLogin" class="btn-primary" style="width:100%">登录 / 注册</button>
+      <button id="closeModal" style="margin-top:16px; background:none; border:none; cursor:pointer; width:100%;">关闭</button>
+    </div>
+  </div>
+
+  <div id="trialDrawer" class="drawer">
+    <h3>🎨 文创应用预览</h3>
+    <button id="closeDrawer" style="float:right; background:none; border:none; font-size:28px; cursor:pointer;">&times;</button>
+    <div style="margin-top: 40px;">
+      <p style="color:#6B5642; margin-bottom:16px;">选择一个民族纹样，将其应用到文创产品上，预览传统纹样在现代设计中的转化效果。</p>
+      <label>选择产品载体：</label>
+      <div style="display:flex; gap:12px; margin:12px 0; flex-wrap:wrap;">
+        <button class="btn-outline product-template" data-product="T恤">T恤</button>
+        <button class="btn-outline product-template" data-product="帆布袋">帆布袋</button>
+        <button class="btn-outline product-template" data-product="手机壳">手机壳</button>
+        <button class="btn-outline product-template" data-product="围巾">围巾</button>
+        <button class="btn-outline product-template" data-product="书签">书签</button>
+      </div>
+      <div style="margin:16px 0;">
+        <p>纹样控制：缩放 / 旋转 / 拖拽（当前为展示模拟）</p>
+        <button id="renderMockupBtn" class="btn-primary" style="width:100%; margin-top:10px;">生成预览效果</button>
+      </div>
+      <div id="previewContainer" style="background:#F3EEE7; border-radius:24px; min-height:220px; display:flex; align-items:center; justify-content:center; padding:16px;">
+        <span style="color:#A58461;">选择纹样和载体后点击生成预览效果</span>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button id="savePreviewBtn" class="btn-primary" style="flex:1;">保存当前预览</button>
+        <button id="clearPreviewBtn" class="btn-outline" style="flex:1;">清空预览</button>
+      </div>
+      <div class="section-title" style="margin-top:28px;">
+        <h3>已保存预览</h3>
+      </div>
+      <div id="savedPreviewList"></div>
+    </div>
+  </div>
+
+  <div id="drawerOverlay" class="overlay-blur"></div>
+
+  <script>
+    let currentUser = null;
+    let currentPage = "home";
+    let currentDrawerPattern = null;
+    let currentTemplate = "T恤";
+    let currentGeneratedPreview = null;
+    const FALLBACK_IMAGE = "./img/白族/baizu (1).jpg";
+    let savedPreviews = JSON.parse(localStorage.getItem("savedPreviews") || "[]");
+    let cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
+
+    // 民族基本信息（保留文化介绍）
+    const ethnicGroups = [
+      { id: "wa", name: "佤族", intro: "通天木鼓、司岗里史诗、几何神谕", culture: "佤族核心纹样包括菱形回纹、倒三角连续纹、牛角纹，常见于木鼓房、寨桩、女神桩和长刀刀鞘。" },
+      { id: "pumi", name: "普米族", intro: "白狼传说、三江并流、白海螺纹", culture: "普米族纹样记录迁徙史与自然崇拜，白海螺纹象征和平、法音与灵魂回归祖源。" },
+      { id: "nu", name: "怒族", intro: "怒江峡谷、岩壁石穴、蜂窝纹", culture: "怒族纹样源于怒江岩壁、洞穴和蜂巢结构，强调直线框架、点状填充和水流生命力。" },
+      { id: "naxi", name: "纳西族", intro: "东巴文化、五行八方、蛙形纹", culture: "纳西族蛙纹浓缩东巴宇宙观，象征生命本源、方位秩序、历法推算与祭祀占卜。" },
+      { id: "lisu", name: "傈僳族", intro: "三色火塘、弩弓传说、贝壳缀纹", culture: "傈僳族弩弓纹象征男性力量与家庭守护，红白黑三色承载火塘、泉水与土地记忆。" },
+      { id: "lahu", name: "拉祜族", intro: "葫芦孕人、创世史诗、长刀纹", culture: "拉祜族葫芦纹源于《牡帕密帕》，象征母体子宫、庇护所、再生和族源神话。" },
+      { id: "jingpo", name: "景颇族", intro: "目瑙纵歌、彩虹雷公纹、迁徙史诗", culture: "景颇族织锦纹样如图画象形文字，记录迁徙路线、舞步秩序与天地连接。" },
+      { id: "jinuo", name: "基诺族", intro: "太阳鼓、阿嫫腰白、八角太阳花", culture: "基诺族太阳花纹源于太阳鼓崇拜，象征希望指引、母体庇护和民族图腾。" },
+      { id: "hani", name: "哈尼族", intro: "哀牢山梯田、白鹇鸟、鱼纹", culture: "哈尼族纹样将农耕文明编织在身上，梯田纹象征水源、土地秩序与族群延续。" },
+      { id: "dulong", name: "独龙族", intro: "蝴蝶文面、怒江峡谷、菱形网纹", culture: "独龙族蝴蝶纹与文面传统相关，象征先灵、灵魂通道、成年礼和自然回归。" },
+      { id: "deang", name: "德昂族", intro: "古老茶农、茶树叶纹、腰箍纹", culture: "德昂族茶树叶纹与茶祖神话相关，藤篾腰箍纹象征美、约束和身份转变。" },
+      { id: "dai", name: "傣族", intro: "水波灵动、金孔雀、贝叶经", culture: "傣族纹样受南传佛教与稻作文明影响，水波纹、孔雀翎眼纹象征净化、吉祥和智慧。" },
+      { id: "bulang", name: "布朗族", intro: "山茶花、酸茶遗存、锯齿纹", culture: "布朗族作为云南早期种茶民族之一，纹样质朴，强调茶山劳作、阴阳平衡和祖先灵魂。" },
+      { id: "bai", name: "白族", intro: "苍洱风花雪月、甲马扎染、蝴蝶纹", culture: "白族纹样源于南诏大理文化和扎染工艺，强调青白色调、风花雪月与建筑审美。" },
+      { id: "achang", name: "阿昌族", intro: "户撒刀、菌子纹、双钩藤纹", culture: "阿昌族纹样与制刀、冶铁和农耕相关，菌子纹象征雨后生命力与生生不息。" }
+    ];
+
+    // 动态生成所有图片路径（完整覆盖你提供的目录结构）
+    function buildAllImages() {
+      const imgBase = "./img/";
+      const images = {};
+
+      // 连续编号且格式单一的民族（循环生成）
+      images["傣族"] = Array.from({length: 73}, (_, i) => `daizu (${i+1}).jpg`);
+      images["白族"] = Array.from({length: 91}, (_, i) => `baizu (${i+1}).jpg`);
+      images["基诺族"] = Array.from({length: 18}, (_, i) => `jinuozu (${i+1}).jpg`);
+      images["阿昌族"] = Array.from({length: 16}, (_, i) => `achangzu (${i+1}).jpg`);
+      images["纳西族"] = Array.from({length: 11}, (_, i) => `naxizu (${i+1}).png`);
+      images["独龙族"] = Array.from({length: 30}, (_, i) => `dulongzu (${i+1}).jpg`);
+      images["傈僳族"] = Array.from({length: 24}, (_, i) => `lisuzu (${i+1}).jpg`);
+      images["哈尼族"] = Array.from({length: 26}, (_, i) => `hanizu (${i+1}).jpg`);
+      images["景颇族"] = Array.from({length: 36}, (_, i) => `jingpozu (${i+1}).jpg`);
+      images["怒族"] = Array.from({length: 7}, (_, i) => `nuzu (${i+1}).jpg`);
+      images["拉祜族"] = Array.from({length: 22}, (_, i) => `lahuzu (${i+1}).jpg`);
+      images["布朗族"] = Array.from({length: 27}, (_, i) => `bulangzu (${i+1}).jpg`);
+      images["普米族"] = Array.from({length: 27}, (_, i) => `pumizu (${i+1}).png`);
+
+      // 混合格式或非连续编号的民族（手动列举）
+      images["佤族"] = [
+        "wazu (1).jpg", "wazu (1).png", "wazu (2).jpg", "wazu (2).png",
+        "wazu (3).jpg", "wazu (3).png", "wazu (4).jpg", "wazu (4).png",
+        "wazu (5).jpg", "wazu (5).png", "wazu (6).jpg", "wazu (6).png",
+        "wazu (7).jpg", "wazu (7).png", "wazu (8).jpg", "wazu (8).png",
+        "wazu (9).jpg", "wazu (9).png", "wazu (10).jpg", "wazu (10).png",
+        "wazu (11).jpg", "wazu (11).png", "wazu (12).jpg", "wazu (12).png",
+        "wazu (13).jpg", "wazu (13).png", "wazu (14).jpg", "wazu (14).png",
+        "wazu (15).jpg", "wazu (15).png", "wazu (16).jpg", "wazu (16).png",
+        "wazu (17).jpg", "wazu (17).png", "wazu (18).jpg", "wazu (18).png",
+        "wazu (19).jpg", "wazu (19).png", "wazu (20).png"
+      ];
+
+      images["德昂族"] = [
+        "deangzu (1).jpg", "deangzu (1).png", "deangzu (2).jpg", "deangzu (2).png",
+        "deangzu (3).jpg", "deangzu (3).png", "deangzu (4).jpg", "deangzu (4).png",
+        "deangzu (5).jpg", "deangzu (5).png", "deangzu (6).jpg", "deangzu (6).png",
+        "deangzu (7).jpg", "deangzu (7).png", "deangzu (8).jpg", "deangzu (8).png",
+        "deangzu (9).jpg", "deangzu (9).png", "deangzu (10).jpg", "deangzu (10).png",
+        "deangzu (11).jpg", "deangzu (11).png", "deangzu (12).jpg", "deangzu (12).png",
+        "deangzu (13).jpg", "deangzu (13).png", "deangzu (14).png", "deangzu (15).png",
+        "deangzu (16).png", "deangzu (17).png"
+      ];
+
+      return images;
+    }
+
+    const allNationImages = buildAllImages();
+
+    // 根据文件名简单推断纹样类型
+    function inferPatternType(filename) {
+      const lower = filename.toLowerCase();
+      if (/鸟|鱼|蝴蝶|孔雀/.test(lower)) return "动物纹样";
+      if (/花|茶|菌|藤/.test(lower)) return "植物纹样";
+      if (/水|云|梯田|日|月|太阳/.test(lower)) return "自然纹样";
+      if (/弩|刀|鼓|腰箍/.test(lower)) return "器物纹样";
+      if (/蛙|葫芦|图/.test(lower)) return "图腾纹样";
+      return "几何纹样";
+    }
+
+    // 生成全部纹样数据（每张图片一个对象）
+    let mockPatterns = [];
+    let patternIdCounter = 1;
+    ethnicGroups.forEach(group => {
+      const nation = group.name;
+      const files = allNationImages[nation] || [];
+      files.forEach(file => {
+        const filePath = `./img/${nation}/${file}`;
+        // 从文件名提取编号用于显示
+        const match = file.match(/\((\d+)\)/);
+        const num = match ? match[1] : '';
+        const name = `${nation}·图案 ${num}`;
+        mockPatterns.push({
+          id: patternIdCounter++,
+          name: name,
+          nation: nation,
+          nationId: group.id,
+          likes: Math.floor(150 + Math.random() * 400),
+          img: filePath,
+          large: filePath,
+          type: inferPatternType(file),
+          priceType: "展示",
+          desc: `${name} 是${nation}传统纹样的一部分。${group.culture}`,
+          culture: group.culture
+        });
+      });
+    });
+
+    // 产品数据保持不变
+    let products = [
+      { id: 101, name: "佤族木鼓纹帆布袋", nation: "佤族", price: 89, sales: 520, img: "./img/佤族/wazu (3).jpg", patternRef: "菱形回纹" },
+      { id: 102, name: "普米族白海螺纹丝巾", nation: "普米族", price: 128, sales: 335, img: "./img/普米族/pumizu (3).png", patternRef: "白海螺纹" },
+      { id: 103, name: "纳西东巴蛙纹文创本", nation: "纳西族", price: 49, sales: 198, img: "./img/纳西族/naxizu (3).png", patternRef: "蛙形纹" },
+      { id: 104, name: "傣族水波孔雀纹茶席", nation: "傣族", price: 168, sales: 112, img: "./img/傣族/daizu (3).jpg", patternRef: "水波纹" },
+      { id: 105, name: "白族风花雪月纹扎染方巾", nation: "白族", price: 98, sales: 289, img: "./img/白族/baizu (3).jpg", patternRef: "风花雪月纹" },
+      { id: 106, name: "哈尼梯田纹手机壳", nation: "哈尼族", price: 59, sales: 430, img: "./img/哈尼族/hanizu (3).jpg", patternRef: "梯田纹" }
+    ];
+
+    // 以下所有函数保持不变（navigateTo, renderHome 等）
+    function saveLocalData() {
+      localStorage.setItem("savedPreviews", JSON.stringify(savedPreviews));
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }
+
+    function showToast(msg) {
+      let t = document.createElement("div");
+      t.className = "toast-msg";
+      t.innerText = msg;
+      document.body.appendChild(t);
+      setTimeout(() => t.remove(), 2200);
+    }
+
+    function checkAuth(needUser = true) {
+      if (!currentUser && needUser) {
+        showToast("请先登录后操作，解锁完整权限");
+        document.getElementById("loginModal").style.display = "flex";
+        return false;
+      }
+      return true;
+    }
+
+    window.navigateTo = function(page) {
+      currentPage = page;
+      let html = "";
+      if (page === "home") html = renderHome();
+      else if (page === "library") html = renderLibrary();
+      else if (page === "try") html = renderTryToolPage();
+      else if (page === "encyclopedia") html = renderEncyclopediaList();
+      else if (page === "shop") html = renderShop();
+      else if (page === "personal") html = renderPersonalCenter();
+      document.getElementById("appContent").innerHTML = html;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      attachPageEvents();
+    };
+
+    function renderHome() {
+      return `
+        <div class="container">
+          <div class="hero">
+            <h1 style="font-size: 2.3rem;">云南民族纹样，传承与创新共生</h1>
+            <p style="margin: 16px 0 28px;">15个云南世居少数民族的文化宝藏，一键浏览、解读与文创预览</p>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+              <button class="btn-primary" onclick="window.navigateTo('library')">立即探索纹样</button>
+              <button class="btn-outline" onclick="openTrialDrawer(null)">进入文创应用预览</button>
+            </div>
+          </div>
+          <div class="grid-4" style="margin-bottom: 48px;">
+            <div class="card" style="padding: 28px; text-align:center;" onclick="window.navigateTo('library')">
+              <i class="fas fa-border-all fa-2x" style="color:#C26E2C;"></i>
+              <h3>纹样库</h3>
+              <p>按民族分类展示纹样图片</p>
+            </div>
+            <div class="card" style="padding: 28px; text-align:center;" onclick="openTrialDrawer(null)">
+              <i class="fas fa-magic fa-2x" style="color:#C26E2C;"></i>
+              <h3>文创应用预览</h3>
+              <p>将纹样应用到文创载体</p>
+            </div>
+            <div class="card" style="padding: 28px; text-align:center;" onclick="window.navigateTo('encyclopedia')">
+              <i class="fas fa-book-open fa-2x" style="color:#C26E2C;"></i>
+              <h3>民族百科</h3>
+              <p>进入民族详情查看纹样介绍</p>
+            </div>
+            <div class="card" style="padding: 28px; text-align:center;" onclick="window.navigateTo('shop')">
+              <i class="fas fa-store fa-2x" style="color:#C26E2C;"></i>
+              <h3>文创商城</h3>
+              <p>查看纹样衍生文创产品</p>
+            </div>
+          </div>
+          <h2>🔥 热门纹样推荐</h2>
+          <div class="grid-4" style="margin: 20px 0 40px;">
+            ${mockPatterns.slice(0, 8).map(p => renderPatternCard(p)).join("")}
+          </div>
+          <h2>🎁 文创产品推荐</h2>
+          <div class="grid-4">
+            ${products.slice(0, 4).map(p => renderProductCard(p)).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPatternCard(p) {
+      return `
+        <div class="card" onclick="viewPatternDetail(${p.id})">
+          <img src="${p.img}" style="width:100%; height:200px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'">
+          <div style="padding: 16px;">
+            <strong>${p.name}</strong><br>
+            ${p.nation} · 👍 ${p.likes}<br>
+            <span class="tag">${p.type}</span>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderProductCard(p) {
+      return `
+        <div class="card" onclick="viewProductDetail(${p.id})">
+          <img src="${p.img}" style="width:100%; height:200px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'">
+          <div style="padding:12px;">
+            <strong>${p.name}</strong><br>
+            ¥${p.price} · ${p.nation}<br>
+            <span style="font-size:12px;">纹样：${p.patternRef}</span>
+            <button class="btn-primary" style="margin-top:10px; width:100%;" onclick="event.stopPropagation();addToCart(${p.id})" > 加入购物车 </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderLibrary() {
+      return `
+        <div class="container">
+          <h2>纹样库</h2>
+          <p style="margin-top:8px; color:#6B5642;">图片按照民族分类展示，点击任意纹样可查看详细文化介绍。</p>
+          <div style="display:flex; gap:12px; margin:20px 0; flex-wrap:wrap;">
+            <select id="nationFilter">
+              <option value="all">全部民族</option>
+              ${ethnicGroups.map(e => `<option>${e.name}</option>`).join("")}
+            </select>
+            <select id="typeFilter">
+              <option value="all">全部类型</option>
+              <option>几何纹样</option>
+              <option>图腾纹样</option>
+              <option>自然纹样</option>
+              <option>动物纹样</option>
+              <option>植物纹样</option>
+              <option>器物纹样</option>
+            </select>
+            <button id="applyFilterBtn" class="btn-primary">筛选</button>
+          </div>
+          <div id="patternListContainer"></div>
+        </div>
+      `;
+    }
+
+    function loadPatterns(nation = "all", type = "all") {
+      let filtered = [...mockPatterns];
+      if (nation !== "all") filtered = filtered.filter(p => p.nation === nation);
+      if (type !== "all") filtered = filtered.filter(p => p.type === type);
+      const container = document.getElementById("patternListContainer");
+      if (!container) return;
+      if (filtered.length === 0) {
+        container.innerHTML = `<div class="empty-box">暂无符合条件的纹样</div>`;
+        return;
+      }
+      const grouped = {};
+      filtered.forEach(p => {
+        if (!grouped[p.nation]) grouped[p.nation] = [];
+        grouped[p.nation].push(p);
+      });
+      container.innerHTML = Object.keys(grouped).map(nationName => {
+        const group = ethnicGroups.find(e => e.name === nationName);
+        return `
+          <div class="section-title">
+            <h3>${nationName}</h3>
+            <button class="btn-outline" onclick="showEthnicDetail('${nationName}')">查看民族介绍</button>
+          </div>
+          <p style="margin-bottom:14px; color:#6B5642;">${group?.intro || ""}</p>
+          <div class="grid-4">
+            ${grouped[nationName].map(p => renderPatternCard(p)).join("")}
+          </div>
+        `;
+      }).join("");
+    }
+
+    window.viewPatternDetail = function(id) {
+      const pattern = mockPatterns.find(p => p.id === id);
+      if (!pattern) return;
+      const related = mockPatterns.filter(p => p.nation === pattern.nation && p.id !== pattern.id).slice(0, 3);
+      const detailHtml = `
+        <div class="container" style="margin: 32px auto;">
+          <button onclick="window.navigateTo('library')" class="btn-outline" style="margin-bottom: 24px;">← 返回纹样库</button>
+          <div style="display:flex; flex-wrap:wrap; gap:32px;">
+            <div style="flex:1.2;">
+              <img src="${pattern.large || pattern.img}" style="width:100%; border-radius:32px; box-shadow:0 12px 24px -8px rgba(0,0,0,0.1);" onerror="this.src='${FALLBACK_IMAGE}'" >
+            </div>
+            <div style="flex:1;">
+              <h2>${pattern.name}</h2>
+              <p><strong>民族：</strong>${pattern.nation} &nbsp;| <i class="far fa-heart"></i> ${pattern.likes} 点赞</p>
+              <p style="margin-top:8px;">
+                <span class="tag">${pattern.type}</span>
+              </p>
+              <div style="background:#F7F0E8; padding:20px; border-radius:24px; margin:20px 0;">
+                <h4>📖 纹样解读</h4>
+                <p>${pattern.desc}</p>
+              </div>
+              <div style="background:#FFF9F2; padding:20px; border-radius:24px; margin:20px 0;">
+                <h4>🏺 使用场景</h4>
+                <p>可用于服饰刺绣、织锦、扎染、银饰、建筑装饰、生活用品及现代文创设计参考。</p>
+              </div>
+              <div style="display:flex; gap:12px; margin-top:28px; flex-wrap:wrap;">
+                <button class="btn-primary" onclick="openTrialDrawer(${pattern.id})">🎨 文创应用预览</button>
+                <button class="btn-outline" onclick="customProduct(${pattern.id})">🛒 加入定制车</button>
+                <button class="btn-outline" onclick="likePattern(${pattern.id})">❤️ 点赞</button>
+              </div>
+            </div>
+          </div>
+          <div class="section-title">
+            <h3>${pattern.nation}相关纹样</h3>
+            <button class="btn-outline" onclick="showEthnicDetail('${pattern.nation}')">进入民族详情</button>
+          </div>
+          <div class="grid-4">
+            ${related.map(p => renderPatternCard(p)).join("")}
+          </div>
+        </div>
+      `;
+      document.getElementById("appContent").innerHTML = detailHtml;
+      window.scrollTo(0, 0);
+    };
+
+    function renderEncyclopediaList() {
+      return `
+        <div class="container">
+          <h2>云南世居少数民族百科</h2>
+          <p style="margin-top:8px; color:#6B5642;">点击民族卡片可进入详情，查看民族文化说明和该民族纹样介绍。</p>
+          <div class="grid-4" style="margin-top:24px;">
+            ${ethnicGroups.map(e => `
+              <div class="card" onclick="showEthnicDetail('${e.name}')">
+                <img src="${mockPatterns.find(p => p.nation === e.name)?.img || FALLBACK_IMAGE}" style="width:100%; height:160px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'">
+                <div style="padding:16px;">
+                  <h3>${e.name}</h3>
+                  <p>${e.intro}</p>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    window.showEthnicDetail = function(name) {
+      const ethnic = ethnicGroups.find(e => e.name === name);
+      const patterns = mockPatterns.filter(p => p.nation === name);
+      if (!ethnic) return;
+      const html = `
+        <div class="container" style="margin-top:32px;">
+          <button onclick="window.navigateTo('encyclopedia')" class="btn-outline" style="margin-bottom: 24px;">← 返回民族百科</button>
+          <div class="hero" style="margin-top:0;">
+            <h1>${ethnic.name}</h1>
+            <p style="margin:12px 0;">${ethnic.intro}</p>
+          </div>
+          <div style="display:flex; flex-wrap:wrap; gap:32px; margin-bottom:36px;">
+            <div style="flex:1;">
+              <img src="${patterns[0]?.img || FALLBACK_IMAGE}" style="width:100%; border-radius:28px; max-height:420px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'">
+            </div>
+            <div style="flex:1;">
+              <h2>民族文化说明</h2>
+              <p style="margin-top:12px; font-size:1rem;">${ethnic.culture}</p>
+            </div>
+          </div>
+          <div class="section-title">
+            <h3>${ethnic.name}纹样介绍</h3>
+            <button class="btn-outline" onclick="window.navigateTo('library')">进入纹样库</button>
+          </div>
+          <div class="grid-3">
+            ${patterns.map(p => `
+              <div class="card" onclick="viewPatternDetail(${p.id})">
+                <img src="${p.img}" style="width:100%; height:220px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'">
+                <div style="padding:18px;">
+                  <h3>${p.name}</h3>
+                  <p style="margin:8px 0;">${p.desc}</p>
+                  <span class="tag">${p.type}</span>
+                </div>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
+      document.getElementById("appContent").innerHTML = html;
+      window.scrollTo(0, 0);
+    };
+
+    function renderTryToolPage() {
+      return `
+        <div class="container">
+          <h2>文创应用预览</h2>
+          <p style="margin-top:8px; color:#6B5642;">
+            选择民族纹样，将其应用到T恤、帆布袋、手机壳、围巾、书签等文创载体，预览传统纹样的现代转化效果。
+          </p>
+          <div class="card" style="padding:36px; text-align:center; margin-top:24px;">
+            <i class="fas fa-cube fa-3x" style="color:#C26E2C;"></i>
+            <p style="margin:20px;">打开预览工具后，可生成效果、保存到当前界面，也可以删除已保存效果。</p>
+            <button class="btn-primary" onclick="openTrialDrawer(null)">打开文创应用预览</button>
+          </div>
+          <div class="section-title">
+            <h3>当前已保存的预览</h3>
+          </div>
+          <div id="tryPageSavedList">
+            ${renderSavedPreviewsHTML(false)}
+          </div>
+        </div>
+      `;
+    }
+
+    window.openTrialDrawer = function(patternId) {
+      if (patternId) {
+        const p = mockPatterns.find(pp => pp.id === patternId);
+        if (p) currentDrawerPattern = p;
+        showToast(`当前选择纹样：${p?.name || "未选择纹样"}`);
+      } else {
+        currentDrawerPattern = mockPatterns[0];
+      }
+      currentGeneratedPreview = null;
+      document.getElementById("trialDrawer").classList.add("open");
+      document.getElementById("drawerOverlay").style.display = "block";
+      renderSavedPreviewList();
+    };
+
+    function closeDrawer() {
+      document.getElementById("trialDrawer").classList.remove("open");
+      document.getElementById("drawerOverlay").style.display = "none";
+    }
+
+    function generateEffect() {
+      const pattern = currentDrawerPattern || mockPatterns[0];
+      const previewImg = pattern.large || pattern.img;
+      currentGeneratedPreview = {
+        id: Date.now(),
+        patternId: pattern.id,
+        patternName: pattern.name,
+        nation: pattern.nation,
+        template: currentTemplate,
+        img: previewImg,
+        createdAt: new Date().toLocaleString()
+      };
+      const container = document.getElementById("previewContainer");
+      container.innerHTML = `
+        <div style="text-align:center; width:100%;">
+          <img src="${previewImg}" style="border-radius:16px; width:100%; max-height:170px; object-fit:cover;" onerror="this.src='${FALLBACK_IMAGE}'" >
+          <p style="margin-top:8px;">✨ “${pattern.name}” 应用于 ${currentTemplate}</p>
+          <p style="font-size:12px; color:#8A7159;">点击“保存当前预览”后会出现在下方列表，可随时删除。</p>
+        </div>
+      `;
+      showToast("预览效果已生成，可以保存到当前界面");
+    }
+
+    function saveCurrentPreview() {
+      if (!currentGeneratedPreview) {
+        showToast("请先生成预览效果");
+        return;
+      }
+      savedPreviews.unshift(currentGeneratedPreview);
+      saveLocalData();
+      renderSavedPreviewList();
+      if (currentPage === "try") {
+        const list = document.getElementById("tryPageSavedList");
+        if (list) list.innerHTML = renderSavedPreviewsHTML(false);
+      }
+      showToast("已保存到当前界面");
+    }
+
+    function clearCurrentPreview() {
+      currentGeneratedPreview = null;
+      document.getElementById("previewContainer").innerHTML = `<span style="color:#A58461;">选择纹样和载体后点击生成预览效果</span>`;
+      showToast("当前预览已清空");
+    }
+
+    function renderSavedPreviewList() {
+      const list = document.getElementById("savedPreviewList");
+      if (!list) return;
+      list.innerHTML = renderSavedPreviewsHTML(true);
+    }
+
+    function renderSavedPreviewsHTML(isDrawer) {
+      if (savedPreviews.length === 0) {
+        return `<div class="empty-box">还没有保存的文创预览</div>`;
+      }
+      return savedPreviews.map(item => `
+        <div class="saved-preview-card">
+          <img src="${item.img}" onerror="this.src='${FALLBACK_IMAGE}'">
+          <div style="flex:1;">
+            <strong>${item.patternName}</strong><br>
+            <span style="font-size:12px;">${item.nation} · ${item.template}</span><br>
+            <span style="font-size:12px; color:#8A7159;">${item.createdAt}</span>
+          </div>
+          <button class="btn-outline" onclick="deleteSavedPreview(${item.id}, ${isDrawer})">删除</button>
+        </div>
+      `).join("");
+    }
+
+    window.deleteSavedPreview = function(id, isDrawer = false) {
+      savedPreviews = savedPreviews.filter(item => item.id !== id);
+      saveLocalData();
+      if (isDrawer) renderSavedPreviewList();
+      if (currentPage === "try") {
+        const list = document.getElementById("tryPageSavedList");
+        if (list) list.innerHTML = renderSavedPreviewsHTML(false);
+      }
+      showToast("已删除保存的预览");
+    };
+
+    function renderShop() {
+      return `
+        <div class="container">
+          <h2>文创商城 · 纹样溯源</h2>
+          <p style="margin-top:8px; color:#6B5642;">选择文创产品加入购物车，之后可在个人中心查看。</p>
+          <div class="grid-4" style="margin-top:24px;">
+            ${products.map(p => renderProductCard(p)).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPersonalCenter() {
+      return `
+        <div class="container">
+          <h2>个人中心</h2>
+          <p style="margin-top:8px; color:#6B5642;">这里可以查看已加入购物车的文创商品，也可以管理保存的文创预览。</p>
+          <div class="section-title">
+            <h3>🛒 我的购物车</h3>
+            <span class="tag">${cartItems.length} 件商品</span>
+          </div>
+          <div id="cartList">
+            ${renderCartHTML()}
+          </div>
+          <div class="section-title">
+            <h3>🎨 我的文创预览</h3>
+            <span class="tag">${savedPreviews.length} 个预览</span>
+          </div>
+          <div id="personalPreviewList">
+            ${renderSavedPreviewsHTML(false)}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderCartHTML() {
+      if (cartItems.length === 0) {
+        return `<div class="empty-box">购物车还是空的，可以去文创商城添加商品。</div>`;
+      }
+      const total = cartItems.reduce((sum, item) => sum + item.price * item.count, 0);
+      return `
+        ${cartItems.map(item => `
+          <div class="cart-row">
+            <img src="${item.img}" onerror="this.src='${FALLBACK_IMAGE}'">
+            <div style="flex:1;">
+              <strong>${item.name}</strong><br>
+              <span style="font-size:12px;">${item.nation} · ${item.patternRef}</span><br>
+              <span>¥${item.price} × ${item.count}</span>
+            </div>
+            <button class="btn-outline" onclick="removeFromCart(${item.id})">删除</button>
+          </div>
+        `).join("")}
+        <div style="background:white; border-radius:24px; padding:20px; margin-top:16px; text-align:right;">
+          <strong>合计：¥${total}</strong>
+          <button class="btn-primary" style="margin-left:12px;" onclick="showToast('当前为展示版本，结算功能可后续接入')">去结算</button>
+        </div>
+      `;
+    }
+
+    window.addToCart = function(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      const exist = cartItems.find(item => item.id === id);
+      if (exist) {
+        exist.count += 1;
+      } else {
+        cartItems.push({ ...product, count: 1 });
+      }
+      saveLocalData();
+      showToast("已加入购物车，可在个人中心查看");
+      if (currentPage === "personal") {
+        window.navigateTo("personal");
+      }
+    };
+
+    window.removeFromCart = function(id) {
+      cartItems = cartItems.filter(item => item.id !== id);
+      saveLocalData();
+      if (currentPage === "personal") {
+        window.navigateTo("personal");
+      }
+      showToast("已从购物车删除");
+    };
+
+    window.viewProductDetail = function(id) {
+      const product = products.find(p => p.id === id);
+      if (!product) return;
+      const html = `
+        <div class="container" style="margin-top:32px;">
+          <button onclick="window.navigateTo('shop')" class="btn-outline" style="margin-bottom:24px;">← 返回文创商城</button>
+          <div style="display:flex; flex-wrap:wrap; gap:32px;">
+            <div style="flex:1;">
+              <img src="${product.img}" style="width:100%; border-radius:32px;" onerror="this.src='${FALLBACK_IMAGE}'">
+            </div>
+            <div style="flex:1;">
+              <h2>${product.name}</h2>
+              <p style="margin-top:8px;">所属民族：${product.nation}</p>
+              <p>应用纹样：${product.patternRef}</p>
+              <h3 style="margin:18px 0;">¥${product.price}</h3>
+              <p style="background:#F7F0E8; padding:18px; border-radius:20px;">
+                该文创产品基于云南少数民族传统纹样进行现代转化，适合作为课程展示、文创设计和民族文化传播案例。
+              </p>
+              <div style="display:flex; gap:12px; margin-top:24px; flex-wrap:wrap;">
+                <button class="btn-primary" onclick="addToCart(${product.id})">加入购物车</button>
+                <button class="btn-outline" onclick="window.navigateTo('personal')">查看个人中心</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+      document.getElementById("appContent").innerHTML = html;
+      window.scrollTo(0, 0);
+    };
+
+    window.customProduct = function(patternId) {
+      const pattern = mockPatterns.find(p => p.id === patternId);
+      if (!pattern) return;
+      currentDrawerPattern = pattern;
+      openTrialDrawer(patternId);
+      showToast("已进入文创应用预览，可选择载体并保存效果");
+    };
+
+    window.likePattern = function(id) {
+      const pattern = mockPatterns.find(p => p.id === id);
+      if (pattern) pattern.likes += 1;
+      showToast("点赞成功");
+    };
+
+    function uploadPatternAction() {
+      if (checkAuth()) {
+        showToast("上传纹样功能：后续可扩展为填写名称、民族、解读和授权信息");
+      }
+    }
+
+    function attachPageEvents() {
+      if (currentPage === "library") {
+        setTimeout(() => {
+          loadPatterns();
+          const filterBtn = document.getElementById("applyFilterBtn");
+          if (filterBtn) {
+            filterBtn.onclick = () => {
+              let nation = document.getElementById("nationFilter").value;
+              let type = document.getElementById("typeFilter").value;
+              loadPatterns(nation, type);
+            };
+          }
+        }, 30);
+      }
+    }
+
+    function bindNavEvents() {
+      const navLinks = document.querySelectorAll("#navLinks a[data-nav]");
+      navLinks.forEach(link => {
+        link.onclick = function(e) {
+          e.preventDefault();
+          const page = this.getAttribute("data-nav");
+          if (page) window.navigateTo(page);
+        };
+      });
+      const logo = document.getElementById("logoHome");
+      if (logo) {
+        logo.onclick = function(e) {
+          e.preventDefault();
+          window.navigateTo("home");
+        };
+      }
+    }
+
+    function initAuth() {
+      const loginBtn = document.getElementById("loginBtn");
+      if (loginBtn) {
+        loginBtn.onclick = (e) => {
+          e.preventDefault();
+          if (currentUser) {
+            window.navigateTo("personal");
+            return;
+          }
+          document.getElementById("loginModal").style.display = "flex";
+        };
+      }
+      document.getElementById("confirmLogin").onclick = () => {
+        let phone = document.getElementById("phoneInput").value.trim();
+        if (!phone) {
+          showToast("请输入手机号");
+          return;
+        }
+        currentUser = { name: "文创体验官", role: "user" };
+        document.getElementById("loginModal").style.display = "none";
+        const authSection = document.getElementById("authSection");
+        if (authSection) {
+          authSection.innerHTML = `
+            <div style="display:flex; gap:8px; align-items:center;">
+              <span>👤 ${currentUser.name}</span>
+              <a id="personalCenterBtn" style="cursor:pointer;">个人中心</a>
+              <a id="logoutBtn" style="cursor:pointer;">退出</a>
+            </div>
+          `;
+          document.getElementById("personalCenterBtn").onclick = () => {
+            window.navigateTo("personal");
+          };
+          document.getElementById("logoutBtn").onclick = () => {
+            currentUser = null;
+            location.reload();
+          };
+        }
+        document.getElementById("msgIcon").style.display = "inline-block";
+        showToast("登录成功！可在个人中心查看购物车");
+      };
+      document.getElementById("closeModal").onclick = () => {
+        document.getElementById("loginModal").style.display = "none";
+      };
+    }
+
+    function initFooter() {
+      document.getElementById("footerUpload").onclick = (e) => { e.preventDefault(); uploadPatternAction(); };
+      document.getElementById("footerAbout").onclick = (e) => { e.preventDefault(); showToast("关于我们：云南非遗数字化保护平台，传承民族文化"); };
+      document.getElementById("footerLicense").onclick = (e) => { e.preventDefault(); showToast("纹样授权协议：传统纹样展示用于文化传播，商用需遵循授权规范"); };
+      document.getElementById("footerJoin").onclick = (e) => { e.preventDefault(); showToast("加入我们：设计师、研究者、传承人可共同参与纹样整理与传播"); };
+    }
+
+    function initTrial() {
+      document.getElementById("closeDrawer").onclick = closeDrawer;
+      document.getElementById("drawerOverlay").onclick = closeDrawer;
+      document.getElementById("renderMockupBtn").onclick = generateEffect;
+      document.getElementById("savePreviewBtn").onclick = saveCurrentPreview;
+      document.getElementById("clearPreviewBtn").onclick = clearCurrentPreview;
+      document.querySelectorAll(".product-template").forEach(btn => {
+        btn.onclick = (e) => {
+          e.stopPropagation();
+          currentTemplate = btn.getAttribute("data-product");
+          showToast(`已切换载体：${currentTemplate}`);
+        };
+      });
+    }
+
+    function initSearch() {
+      const searchInput = document.getElementById("globalSearch");
+      if (searchInput) {
+        searchInput.onkeypress = (e) => {
+          if (e.key === "Enter") {
+            const keyword = e.target.value.trim();
+            if (!keyword) { showToast("请输入搜索关键词"); return; }
+            const result = mockPatterns.filter(p => {
+              return p.name.includes(keyword) || p.nation.includes(keyword) || p.type.includes(keyword) || p.desc.includes(keyword);
+            });
+            renderSearchResult(keyword, result);
+          }
+        };
+      }
+    }
+
+    function renderSearchResult(keyword, result) {
+      const html = `
+        <div class="container" style="margin-top:32px;">
+          <h2>搜索结果：${keyword}</h2>
+          <p style="margin-top:8px; color:#6B5642;">共找到 ${result.length} 个相关纹样。</p>
+          <div class="grid-4" style="margin-top:24px;">
+            ${result.length ? result.map(p => renderPatternCard(p)).join("") : `<div class="empty-box">暂无相关纹样</div>`}
+          </div>
+        </div>
+      `;
+      document.getElementById("appContent").innerHTML = html;
+      window.scrollTo(0, 0);
+    }
+
+    function init() {
+      bindNavEvents();
+      initAuth();
+      initFooter();
+      initTrial();
+      initSearch();
+      window.navigateTo("home");
+    }
+
+    init();
+  </script>
+</body>
+</html>
